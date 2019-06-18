@@ -1,0 +1,39 @@
+<% if defined?(resource) && resource.errors.any?
+  flash[:validation_error] = resource.errors.full_messages
+end %>
+
+<% flash.each do |name, msg| %>
+  <%
+  flash_msg = (msg || "")
+
+  if ['alert', 'errors', 'validation_error'].include? name.to_s
+    class_used = "alert-danger"
+  elsif ['notice', 'success'].include? name.to_s
+    class_used = "alert-success"
+  elsif ['info'].include? name.to_s
+    class_used = "alert-info"
+  end
+  %>
+
+  <div class="alert <%=class_used%>" id="error_msg_div" <%if flash_msg.blank?%>style="display:none;"<%end%>>
+    <button type="button" class="close flash_cross" aria-label="Close" data-hide='alert'><span aria-hidden="true">&times;</span></button>
+    <span id="error_msgs"style="font-weight: normal;">
+      <%
+      begin
+        concat change_text_to_html(flash_msg).html_safe
+      rescue
+        concat flash_msg
+      end %>
+    </span>
+  </div>
+<%end%>
+
+<% flash.clear # Clear all flash values after displaying as it might be reflected in next redirect %>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("[data-hide]").on("click", function(){
+      $(this).closest("." + $(this).attr("data-hide")).hide();
+    });
+  });
+</script>
