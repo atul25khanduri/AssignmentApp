@@ -1,6 +1,6 @@
 <%= render "/shared/error_messages" %>
 
-<h2>Hello <%= current_user.full_name %></h2>
+<h2>Hello <%= @user.full_name %></h2>
 
 <% if can?(:manage, SecretCode) %>
   <%= link_to 'Click here', secret_code_index_path %> to create some Secret codes

@@ -21,8 +21,4 @@ class User < ApplicationRecord
     # Set Secret Code from code
     self.secret_code = SecretCode.find_by(code: code)
   end
-
-  def full_name
-    [first_name, last_name].join(' ')
-  end
 end
